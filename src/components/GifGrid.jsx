@@ -1,35 +1,29 @@
+// GifGrid.js
+import deleteIcon from '../Assets/delete.png'; 
+import React from 'react';
 import { GifItem } from './GifItem';
 import { useFetchGifs } from '../hooks/useFetchGifs';
-import React from 'react';
 
+export const GifGrid = ({ category, onDeleteCategory }) => {
+  const { images, isLoading } = useFetchGifs(category);
 
-export const GifGrid = ({ category }) => {
+  const handleDeleteClick = () => {
+    onDeleteCategory(category);
+  };
 
-    const { images, isLoading } = useFetchGifs( category );
-  
-  
-    return (
-        <>
-            <h3>{ category }</h3>
-            {
-                isLoading && ( <h2>Cargando...</h2> )
-            }
-    
-{/* // no se puede usar class */}
-            <div className="card-grid">
-                {
+  return (
+    <>
+      <div className="category-header">
+        <h3>{category}</h3>
+        <img src={deleteIcon} onClick={handleDeleteClick} alt="Delete" />
+      </div>
+      {isLoading && <h2>Cargando...</h2>}
 
-                    images.map( ( image ) => (
-                        <GifItem 
-                            key={ image.id } 
-                               {... image}
-                      
-                        />
-                    ))
-                }
-                
-            </div>
-
-        </>
-    )
-}
+      <div className="card-grid">
+        {images.map((image) => (
+          <GifItem key={image.id} {...image} />
+        ))}
+      </div>
+    </>
+  );
+};
